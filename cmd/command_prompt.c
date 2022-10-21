@@ -58,13 +58,17 @@ int execute_command(char *command_string)
 
 	// Lookup in the commands array and execute the command
 	int command_found = 0;
-	int i ;
+	int i, counter = 0;
+	int arr[NUM_OF_COMMANDS];
 	for (i = 0; i < NUM_OF_COMMANDS; i++)
 	{
 		if (strcmp(arguments[0], commands[i].name) == 0)
 		{
 			command_found = 1;
 			break;
+		}else if(strncmp(commands[i].name, arguments[0], strlen(arguments[0])) == 0){
+			arr[counter] = i;
+			counter++;
 		}
 	}
 
@@ -73,6 +77,12 @@ int execute_command(char *command_string)
 		int return_value;
 		return_value = commands[i].function_to_execute(number_of_arguments, arguments);
 		return return_value;
+	}
+	else if(counter > 0){
+		for(int i = 0; i < counter; i++){
+			cprintf("%s\n", commands[arr[i]].name);
+		}
+		return 0;
 	}
 	else
 	{
